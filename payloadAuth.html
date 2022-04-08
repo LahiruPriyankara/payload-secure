@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.js">  </script>
+</head>
+
+
+<body>
+    <h1>hh</h1>
+</body>
+<script>
+//var plaintext = "{\"id\":16,\"userId\":\"u600\",\"timeStamp\":\"2022-03-29\",\"previousPoints\":25700,\"currentPoints\":25700,\"orderId\":\"od-250\",\"orderNetValue\":15,\"orderGrossValue\":15,\"action\":\"Points-Earn\",\"currentLevel\":\"Platinum\",\"previousLevel\":\"Platinum\",\"expireDate\":\"2025-05-16\",\"type\":\"Points-Earn\",\"description\":\"Points earned by current order\"}";
+
+var plaintext = "{\n" +
+                "    \"id\": 16,\n" +
+                "    \"userId\": \"u600\",\n" +
+                "    \"timeStamp\": \"2022-03-29\",\n" +
+                "    \"previousPoints\": 25700,\n" +
+                "    \"currentPoints\": 25700,\n" +
+                "    \"orderId\": \"od-250\",\n" +
+                "    \"orderNetValue\": 15,\n" +
+                "    \"orderGrossValue\": 15,\n" +
+                "    \"action\": \"Points-Earn\",\n" +
+                "    \"currentLevel\": \"Platinum\",\n" +
+                "    \"previousLevel\": \"Platinum\",\n" +
+                "    \"expireDate\": \"2025-05-16\",\n" +
+                "    \"type\": \"Points-Earn\",\n" +
+                "    \"description\": \"Points earned by current order\" \n" +
+                "}";
+
+console.log('plaintext: ', plaintext);				
+//Removing line breaks
+plaintext = plaintext.replace(/\r?\n|\r/g, "");///[\r\n]/gm, ''
+//Removing white-spaces
+plaintext = plaintext.replace(/\s/g, '');
+console.log('plaintext: ', plaintext);
+
+function encrypt(word){
+    const keyBase64 = "o9szYIOq1rRMiouNhNvaq96lqUvCekxR";
+    var key = CryptoJS.enc.Base64.parse(keyBase64);
+    var srcs = CryptoJS.enc.Utf8.parse(word);
+    var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+    return encrypted.toString();
+}
+
+function decrypt(word){
+    const keyBase64 = "o9szYIOq1rRMiouNhNvaq96lqUvCekxR";
+    var key = CryptoJS.enc.Base64.parse(keyBase64);
+    var decrypt = CryptoJS.AES.decrypt(word, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+    return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+}
+
+var ciphertext = encrypt(plaintext);
+console.log('ciphertext: ', ciphertext);
+var decryptedtext = decrypt(ciphertext);
+console.log('decryptedtext: ', decryptedtext);
+
+finalEcoredPayloadString = ciphertext;
+//var finalEcoredPayloadString = encodeURIComponent(ciphertext);
+console.log("finalEcoredPayloadString : " + finalEcoredPayloadString);
+</script>
+
+</html>
